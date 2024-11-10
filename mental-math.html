@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+<TITLE>Top HTML Tags</TITLE>
+</HEAD>
+</HTML>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心算挑戰</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #0077cc;
+            text-align: center;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+        }
+        button:hover {
+            background-color: #005fa3;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #d9534f;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>1023 減 13 的心算挑戰</h1>
+    <p>從 1023 開始，每次減去 13，答錯則重新開始。限時 5 分鐘！</p>
+    
+    <div class="timer" id="timer">05:00</div>
+
+    <input type="number" id="userInput" placeholder="請輸入答案" autofocus>
+    <button onclick="checkAnswer()">提交答案</button>
+    
+    <div class="message" id="message"></div>
+
+    <script>
+        let currentNumber = 1023;
+        let timeLeft = 300; // 倒數 5 分鐘 (300 秒)
+        let timerInterval;
+
+        // 倒數計時器
+        function startTimer() {
+            timerInterval = setInterval(function() {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('message').textContent = '時間到！挑戰結束';
+                    document.getElementById('userInput').disabled = true;
+                } else {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    document.getElementById('timer').textContent = 
+                        (minutes < 10 ? '0' : '') + minutes + ':' + 
+                        (seconds < 10 ? '0' : '') + seconds;
+                }
+            }, 1000);
+        }
+
+        // 啟動倒數計時器
+        startTimer();
+
+        // 檢查使用者的答案
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('userInput').value);
+            const correctAnswer = currentNumber - 13;
+
+            if (userAnswer === correctAnswer) {
+                currentNumber -= 13;
+                document.getElementById('message').textContent = `正確！下一題是 ${currentNumber} 減 13`;
+            } else {
+                currentNumber = 1023;
+                document.getElementById('message').textContent = '答錯了！請從 1023 重新開始';
+            }
+            document.getElementById('userInput').value = '';
+            document.getElementById('userInput').focus();
+        }
+    </script>
+
+</body>
+</html>
